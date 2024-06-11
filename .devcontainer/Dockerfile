@@ -20,7 +20,6 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
     wget
 
 # Thrift install steps were extracted from github repository build.yml file
-# RUN wget https://dlcdn.apache.org/thrift/${THRIFT_VER}/thrift-${THRIFT_VER}.tar.gz -cO /tmp/thrift.tgz \
 RUN wget https://github.com/apache/thrift/archive/refs/tags/v${THRIFT_VER}.tar.gz -cO /tmp/thrift.tgz \
     && tar -C /tmp -xf /tmp/thrift.tgz  \
     && rm /tmp/thrift.tgz
@@ -32,6 +31,14 @@ RUN ./bootstrap.sh \
     && make install \
     && rm -rf /tmp/thrift-${THRIFT_VERSION} \ 
     && apt-get remove -y gcc g++
+
+# OSquery install 
+ENV OSQUERY_KEY=1484120AC4E9F8A1A577AEEE97A80C63C9D8B80B
+RUN apt-get -y update \
+    && apt-get install -y software-properties-common \
+    && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $OSQUERY_KEY \ 
+    && add-apt-repository 'deb [arch=amd64] https://pkg.osquery.io/deb deb main' \ 
+    && apt-get -y install osquery
 
 # # GOLANG INSTAILL 
 WORKDIR / 
