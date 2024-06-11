@@ -44,5 +44,6 @@ test: all
 
 clean:
 	rm -rf ./build ./gen
+	rm example_*
 
 .PHONY: all
